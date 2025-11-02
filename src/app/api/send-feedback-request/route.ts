@@ -18,6 +18,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, info: response });
   } catch (error) {
     console.error("Resend error:", error);
-    return NextResponse.json({ success: false, error: error?.message || error });
+    // TypeScript-safe error extraction for Vercel build
+    return NextResponse.json({
+      success: false,
+      error:
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error
+          ? (error as any).message
+          : String(error),
+    });
   }
 }

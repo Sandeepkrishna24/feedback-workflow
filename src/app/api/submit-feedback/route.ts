@@ -42,8 +42,16 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error sending feedback emails:", error);
-    return NextResponse.json({ success: false, error: error?.message || error });
+    return NextResponse.json({
+      success: false,
+      error:
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error
+          ? (error as any).message
+          : String(error),
+    });
   }
 }
