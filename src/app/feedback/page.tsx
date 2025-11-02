@@ -8,28 +8,28 @@ export default function FeedbackForm() {
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // This is the ONLY allowed signature for TS build!
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErrorMsg("");
     setSubmitted(false);
 
-    try {
-      const res = await fetch("/api/submit-feedback", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, feedback }),
+    fetch("/api/submit-feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, feedback }),
+    })
+      .then(async (res) => {
+        if (res.ok) {
+          setSubmitted(true);
+        } else {
+          const data = await res.json();
+          setErrorMsg(data.error ? data.error : "Failed to submit feedback. Try again.");
+        }
+      })
+      .catch(() => {
+        setErrorMsg("Network error. Please try again.");
       });
-      if (res.ok) {
-        setSubmitted(true);
-      } else {
-        const data = await res.json();
-        setErrorMsg(data.error ? data.error : "Failed to submit feedback. Try again.");
-      }
-    } catch (err) {
-      setErrorMsg("Network error. Please try again.");
-    }
-  };
+  }
 
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
