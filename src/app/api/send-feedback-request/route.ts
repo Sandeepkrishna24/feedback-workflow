@@ -13,12 +13,10 @@ export async function POST(request: Request) {
       subject: "Feedback Request Link",
       html: `<p>Please fill out this feedback form: <a href="http://localhost:3000/feedback">Feedback Form</a></p>`,
     });
-    // Log the Resend API response for troubleshooting
     console.log("Resend API response:", response);
     return NextResponse.json({ success: true, info: response });
   } catch (error) {
     console.error("Resend error:", error);
-    // TypeScript-safe error extraction for Vercel build
     return NextResponse.json({
       success: false,
       error:
