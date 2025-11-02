@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 
-
 export default function FeedbackForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -9,6 +8,7 @@ export default function FeedbackForm() {
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  // This is the ONLY allowed signature for TS build!
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMsg("");
